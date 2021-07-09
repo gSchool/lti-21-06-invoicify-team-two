@@ -2,11 +2,8 @@ package com.galvanize.invoicify.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
-
-//@Document(collection = "BillingRecord")
 
 @Entity
 public abstract  class BillingRecord {
@@ -14,8 +11,6 @@ public abstract  class BillingRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
-
-    @ManyToOne
     protected User createdBy;
 
 
