@@ -54,13 +54,13 @@ public class CompanyControllerTest {
         //MockitoAnnotations.initMocks(this);
 
         when(companyRepository.findById(1L)).thenReturn(Optional.of(new Company("ABC-Company")));
-        when(companyRepository.save(any(Company.class))).thenReturn(new Company("ABC-Company"));
+        when(companyRepository.save(any(Company.class))).thenReturn(new Company("XYZ-Company"));
 
         companyController = new CompanyController(companyRepository);
-        Optional<Company> actual = companyController.getCompanyById(1L);
+        Optional<Company> actual = Optional.ofNullable(companyController.updateCompany(1L, new Company("XYZ-Company")));
         Company actual2 = companyController.createCompany(actual.get());
 
-        assertThat(actual2.getName()).isEqualTo("ABC-Company");
+        assertThat(actual2.getName()).isEqualTo("XYZ-Company");
     }
     //DELETE
     @Test
