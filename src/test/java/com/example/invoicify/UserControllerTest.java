@@ -1,79 +1,136 @@
 package com.example.invoicify;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.galvanize.invoicify.controllers.SessionController;
+import com.galvanize.invoicify.controllers.UserController;
 import com.galvanize.invoicify.models.User;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.http.MediaType;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-//
-//import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-
-
+import com.galvanize.invoicify.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@ExtendWith(MockitoExtension.class)
+class UserControllerTest {
 
 
-//@SpringBootTest
-//@AutoConfigureMockMvc
-@WebMvcTest
-public class UserControllerTest {
+    private UserController userController;
+    private SessionController sessionController;
 
-    User user = new User();
+    @Mock
+    private UserRepository userRepository;
 
-    @Autowired
-    MockMvc mvc;
+    @Mock
+    private PasswordEncoder encoder;
 
-    @Test
-    public void apiEndpoint() throws Exception {
-        this.mvc.perform(get("/api/users").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Invoicify Users"));
-    }
+    @Mock
+    private UserDetailsService userDetails;
+    @Mock
+    private AuthenticationManager authenticator;
 
-//    As a user want to login,
-//    given I have a valid ID and password
+    @Mock
+    Authentication auth;
+
 //
-//    POST http://localhost:8080/api/session
+//    //CREATE
+//    @Test
+//    public void testCreateUser() {
+//
+//        when(userRepository.save(any(User.class))).thenReturn(new User("admin","admin"));
+//
+////        userController = new UserController(userRepository,encoder);
+//        User actual = userController.createUser(new User("admin","admin"));
+//
+//        assertThat(actual.getUsername()).isEqualTo("admin");
+//    }
 
+    //CREATE
     @Test
-    public void getUserLoginSession() throws Exception {
-        ObjectMapper userMap = new ObjectMapper();
-        user.setId(1L);
-        user.setUsername("bob");
-        user.setPassword("password");
+    public void testSession() {
 
-        String userObject = userMap.writeValueAsString(user);
-        System.out.println(userObject);
-        RequestBuilder request = post("/api/session")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(userObject);
-
-        this.mvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username", equalTo("bob" )))
-                .andExpect(jsonPath("$.password", equalTo("password" )));
+        when(auth.getPrincipal()).thenReturn(new User("admin","admin"));
+        sessionController = new SessionController(userDetails,authenticator);
+        User actual = sessionController.getLoggedInUserId(auth);
+        assertThat(actual.getUsername()).isEqualTo("admin");
     }
+/*
+    //READ
+    @Test
+    public void testGetCustomerById() {
+
+        //MockitoAnnotations.initMocks(this);
+
+        when(customerRepository.findById(1L)).thenReturn(Optional.of(new Customer("jean-marc", "julien")));
+
+        customerController = new CustomerController(customerRepository);
+        Optional<Customer> actual = customerController.getCustomerById(1L);
+
+        assertThat(actual.get().getFirstName()).isEqualTo("jean-marc");
+    }
+
+
+    //UPDATE
+    @Test
+    public void testUpdateCustomer() {
+
+        //MockitoAnnotations.initMocks(this);
+
+        when(customerRepository.findById(1L)).thenReturn(Optional.of(new Customer("jean-marc", "julien")));
+        when(customerRepository.save(any(Customer.class))).thenReturn(new Customer("jean-marc","julien"));
+
+        customerController = new CustomerController(customerRepository);
+        Optional<Customer> actual = customerController.getCustomerById(1L);
+        Customer actual2 = customerController.create(actual.get());
+
+        assertThat(actual2.getFirstName()).isEqualTo("jean-marc");
+    }
+
+    //DELETE
+    @Test
+    public void testDeleteCustomer() {
+
+        MockitoAnnotations.initMocks(this);
+
+        Customer user = new Customer();
+        user.setId(1L);
+        user.setFirstName("jean-marc");
+        user.setLastName("julien");
+
+        when(customerRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        customerController = new CustomerController(customerRepository);
+
+        Optional<Customer> actual = customerController.deleteCustomerById(user.getId());
+
+        assertThat(actual.get().getFirstName()).isEqualTo("jean-marc");
+
+    }
+
+    //LIST
+    @Test
+    public void testListCustomers() {
+
+        ArrayList<Customer> customers = new ArrayList<Customer>();
+        customers.add(new Customer("jean-marc","julien"));
+        customers.add(new Customer("hunt","applegate"));
+        when(customerRepository.findAll()).thenReturn(customers);
+
+        customerController = new CustomerController(customerRepository);
+        Iterable<Customer> actual = customerController.getAll();
+
+        assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
+    }
+*/
+
 }

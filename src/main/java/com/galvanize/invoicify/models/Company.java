@@ -15,8 +15,8 @@ public class Company {
     @Column(length = 255)
     private String name;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "company")
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "company")
     private String company;
 
     public Company() {

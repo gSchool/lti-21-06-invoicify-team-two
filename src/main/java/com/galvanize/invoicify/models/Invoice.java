@@ -1,7 +1,6 @@
 package com.galvanize.invoicify.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.springframework.data.annotation.Id;
 //import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
