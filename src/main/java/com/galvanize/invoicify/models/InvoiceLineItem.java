@@ -1,7 +1,7 @@
 package com.galvanize.invoicify.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
+//import org.springframework.data.annotation.*;
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -11,6 +11,7 @@ public class InvoiceLineItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
 
     @JsonBackReference
     @OneToOne
