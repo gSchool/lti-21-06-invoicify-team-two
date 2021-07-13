@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.galvanize.invoicify.models.User;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -22,13 +24,18 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder encoder;
 
+	public UserController(UserRepository userRepository, PasswordEncoder encoder) {
+		this.userRepository = userRepository;
+		this.encoder = encoder;
+	}
+
 	@PutMapping("{id}")
 	public User updateUser(Authentication auth, @RequestBody User user, @PathVariable Long id) {
-		User currentUserData = this.userRepository.findOne(id);
-		user.setId(currentUserData.getId());
+		Optional<User> currentUserData = this.userRepository.findById(id);
+		user.setId(currentUserData.get().getId());
 
 		if (user.getPassword() == null) {
-			user.setPassword(currentUserData.getPassword());
+			user.setPassword(currentUserData.get().getPassword());
 		} else {
 			String encryptedPassword = encoder.encode(user.getPassword());
 			user.setPassword(encryptedPassword);
