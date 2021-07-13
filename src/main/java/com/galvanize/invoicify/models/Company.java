@@ -3,6 +3,7 @@ package com.galvanize.invoicify.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Company {
@@ -14,17 +15,17 @@ public class Company {
 
     @Column(length = 255)
     private String name;
+  
+    @JsonIgnore
+    @OneToMany(mappedBy = "company")
+    private List<Invoice> invoices;
 
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "company")
-    private String company;
 
     public Company() {
     }
 
-    public Company(String name, String company) {
+    public Company(String name) {
         this.name = name;
-        this.company = company;
     }
 
     public Long getId() {
@@ -39,12 +40,12 @@ public class Company {
         this.name = name;
     }
 
-    public String getCompany() {
-        return company;
+    public List<Invoice> getInvoices() {
+        return invoices;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class Company {
         return "Company{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", company='" + company + '\'' +
+                ", invoices=" + invoices +
                 '}';
     }
 }
