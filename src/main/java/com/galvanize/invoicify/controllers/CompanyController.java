@@ -1,5 +1,6 @@
 package com.galvanize.invoicify.controllers;
 
+import org.springframework.security.core.Authentication;
 import com.galvanize.invoicify.models.Company;
 import com.galvanize.invoicify.models.User;
 import com.galvanize.invoicify.repositories.CompanyRepository;
@@ -13,15 +14,16 @@ public class CompanyController {
 
     private final CompanyRepository companyRepository;
 
-
     public CompanyController(CompanyRepository companyRepository){
         this.companyRepository=companyRepository;
     }
 
     @PostMapping("/api/company")
-    public Company createCompany(@RequestBody Company company) {
-       return this.companyRepository.save(company);
-
+    public Company createCompany(Authentication auth,@RequestBody Company company) {
+       if(auth !=null){
+            return this.companyRepository.save(company);
+        }
+       return null;
     }
     @GetMapping("/api/company/{id}")
     public Optional<Company> getCompanyById(@PathVariable Long id) {
