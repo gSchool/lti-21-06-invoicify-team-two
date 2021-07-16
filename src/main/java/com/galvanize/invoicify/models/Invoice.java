@@ -1,5 +1,7 @@
 package com.galvanize.invoicify.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
@@ -93,5 +95,6 @@ public class Invoice {
                 ", lineItems=" + lineItems +
                 '}';
     }
+
 }
 
