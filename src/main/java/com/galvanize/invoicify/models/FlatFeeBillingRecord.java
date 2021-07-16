@@ -1,5 +1,8 @@
 package com.galvanize.invoicify.models;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.Entity;
 
 @Entity
@@ -34,7 +37,7 @@ public class FlatFeeBillingRecord extends BillingRecord {
     @Override
     public String toString() {
         return "FlatFeeBillingRecord{" +
-                "id=" + id +
+                "id= " + id +
                 ", createdBy=" + createdBy +
                 ", inUse=" + inUse +
                 ", description='" + description + '\'' +
