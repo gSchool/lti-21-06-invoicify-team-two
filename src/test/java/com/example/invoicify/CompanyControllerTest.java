@@ -9,8 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,50 +27,92 @@ import static org.mockito.Mockito.when;
 public class CompanyControllerTest {
 
     private CompanyController companyController;
-
     @Mock
     private CompanyRepository companyRepository;
 
+    @Mock
+    private AuthenticationManager authenticator;
+
+    @Mock
+    private Authentication auth = new Authentication() {
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            return null;
+        }
+
+        @Override
+        public Object getCredentials() {
+            return null;
+        }
+
+        @Override
+        public Object getDetails() {
+            return null;
+        }
+
+        @Override
+        public Object getPrincipal() {
+            return null;
+        }
+
+        @Override
+        public boolean isAuthenticated() {
+            return false;
+        }
+
+        @Override
+        public void setAuthenticated(boolean b) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public String getName() {
+            return null;
+        }
+    };
+
     @Test
     public void testCreateCompany(){
+        when(auth.isAuthenticated()).thenReturn(true);
+        System.out.println((auth.toString()));
         when(companyRepository.save(any(Company.class))).thenReturn(new Company("ABC-Company"));
         companyController = new CompanyController(companyRepository);
-        Company actual = companyController.createCompany(new Company("ABC-Company"));
+        Company actual = companyController.createCompany(auth,new Company("ABC-Company"));
         assertThat(actual.getName()).isEqualTo("ABC-Company");
 
     }
-
     //READ
     @Test
     public void testGetCompanyById() {
-
         //MockitoAnnotations.initMocks(this);
+        when(auth.isAuthenticated()).thenReturn(true);
 
         when(companyRepository.findById(1L)).thenReturn(Optional.of(new Company("ABC-Company")));
 
         companyController = new CompanyController(companyRepository);
-        Optional<Company> actual = companyController.getCompanyById(1L);
+        Optional<Company> actual = companyController.getCompanyById(auth,1L);
 
         assertThat(actual.get().getName()).isEqualTo("ABC-Company");
     }
     //UPDATE
     @Test
     public void testUpdateCompany() {
+        when(auth.isAuthenticated()).thenReturn(true);
 
         //MockitoAnnotations.initMocks(this);
-
         when(companyRepository.findById(1L)).thenReturn(Optional.of(new Company("ABC-Company")));
         when(companyRepository.save(any(Company.class))).thenReturn(new Company("XYZ-Company"));
 
         companyController = new CompanyController(companyRepository);
-        Optional<Company> actual = Optional.ofNullable(companyController.updateCompany(1L, new Company("XYZ-Company")));
-        Company actual2 = companyController.createCompany(actual.get());
+        Optional<Company> actual = Optional.ofNullable(companyController.updateCompany(auth, 1L, new Company("XYZ-Company")));
+        Company actual2 = companyController.updateCompany(auth, 1L, actual.get());
 
         assertThat(actual2.getName()).isEqualTo("XYZ-Company");
     }
     //DELETE
     @Test
     public void testDeleteCompany() {
+        when(auth.isAuthenticated()).thenReturn(true);
 
       //  MockitoAnnotations.initMocks(this);
 
@@ -73,7 +121,7 @@ public class CompanyControllerTest {
         when(companyRepository.findById(company.getId())).thenReturn(Optional.of(company));
         companyController = new CompanyController(companyRepository);
 
-        Optional<Company> actual = companyController.deleteCompanyById(company.getId());
+        Optional<Company> actual = companyController.deleteCompanyById(auth, company.getId());
 
         assertThat(actual.get().getName()).isEqualTo("ABC-Company");
 
@@ -82,6 +130,8 @@ public class CompanyControllerTest {
     //LIST
     @Test
     public void testListCustomers() {
+        when(auth.isAuthenticated()).thenReturn(true);
+
         ArrayList<Company> companies = new ArrayList<Company>();
         companies.add(new Company("ABC-Company"));
         companies.add(new Company("XYZ-Company"));
@@ -89,7 +139,7 @@ public class CompanyControllerTest {
 
         companyController = new CompanyController(companyRepository);
 
-        Iterable<Company> actual = companyController.getAll();
+        Iterable<Company> actual = companyController.getAll(auth);
 
         assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
 
