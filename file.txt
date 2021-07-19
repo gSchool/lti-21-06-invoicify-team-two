@@ -1,10 +1,12 @@
-As a user I want to see a list of
-all billing records of each company,
-so that I know which services were
-requested from clients
+http://localhost:8080/api/billing-record/flat-fee/1
 
-Given I have billing records
+As a user, I want to add a billing record with a company,
+so that we can later provide that service for that company
 
-When I check the list of billing records
+Given I have a company that we can provide a service with a flat fee
 
-I should see the list of all billing records
+When I submit the company id, price, and description of the service
+
+Then the billing record should be entered into the system
+
+And the information of the billing record should show in the response

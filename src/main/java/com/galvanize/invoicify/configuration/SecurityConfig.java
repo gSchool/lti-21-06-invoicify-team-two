@@ -32,8 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/api/session").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .and()
-                .csrf().disable();
+                .csrf().disable()
+                .headers().frameOptions().disable();
     }
 
     @Bean
