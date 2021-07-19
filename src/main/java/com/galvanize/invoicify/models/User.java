@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -88,4 +90,17 @@ public class User implements UserDetails {
 		this.username = username;
 	}
 
+	@Override
+	public String toString() {
+		return  "createdBy{" +
+				"id=" + id +
+ 				", password=" + password +
+				", username=" + username +
+				", accountNonExpired=" + isAccountNonExpired() +
+				", accountNonLocked=" + isAccountNonLocked() +
+				", credentialsNonExpired=" + isCredentialsNonExpired() +
+				", authorities=" + getAuthorities() +
+				", enabled=" + isEnabled() +
+				"}";
+	}
 }
