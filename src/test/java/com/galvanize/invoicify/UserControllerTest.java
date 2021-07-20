@@ -1,11 +1,15 @@
-package com.example.invoicify;
+package com.galvanize.invoicify;
+import com.galvanize.invoicify.controllers.CompanyController;
 import com.galvanize.invoicify.controllers.SessionController;
 import com.galvanize.invoicify.controllers.UserController;
+import com.galvanize.invoicify.models.Company;
 import com.galvanize.invoicify.models.User;
 import com.galvanize.invoicify.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -48,5 +52,21 @@ class UserControllerTest {
         sessionController = new SessionController(userDetails,authenticator);
         User actual = sessionController.getLoggedInUserId(auth);
         assertThat(actual.getUsername()).isEqualTo("admin");
+    }
+    //LIST
+    @Test
+    public void testListUsers() {
+
+        ArrayList<User> users = new ArrayList<User>();
+        users.add(new User());
+        users.add(new User());
+        when(userRepository.findAll()).thenReturn(users);
+
+        userController = new UserController(userRepository, encoder);
+
+        Iterable<User> actual = userController.listUsers();
+
+        assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
+
     }
 }

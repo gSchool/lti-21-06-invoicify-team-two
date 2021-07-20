@@ -1,4 +1,4 @@
-package com.example.invoicify;
+package com.galvanize.invoicify;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
