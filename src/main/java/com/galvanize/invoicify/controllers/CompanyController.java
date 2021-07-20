@@ -20,46 +20,52 @@ public class CompanyController {
 
     @PostMapping("/api/company")
     public Company createCompany(Authentication auth,@RequestBody Company company) {
-       if(auth !=null && auth.isAuthenticated()){
+        System.out.println("creating a company" + company.toString());
+//        if(auth !=null && auth.isAuthenticated()){
             return this.companyRepository.save(company);
-        }
-       return null;
+//        }
+//       return null;
     }
     @GetMapping("/api/company/{id}")
     public Optional<Company> getCompanyById(Authentication auth, @PathVariable Long id) {
-        if(auth !=null && auth.isAuthenticated()) {
+        System.out.println("getting a company by id" + id);
+//        if(auth !=null && auth.isAuthenticated()) {
             return this.companyRepository.findById(id);
-        }
-        return null;
+//        }
+//        return null;
     }
 
    @PutMapping("/api/company/{id}")
    public Company updateCompany(Authentication auth, @PathVariable long id, @RequestBody Company company){
-       if(auth !=null && auth.isAuthenticated()) {
+       System.out.println("updating a company" + id + " " + company.toString());
+//       if(auth !=null && auth.isAuthenticated()) {
            Company newCompany = this.companyRepository.findById(id).get();
            newCompany.setName(company.getName());
            newCompany.setInvoices(company.getInvoices());
            return this.companyRepository.save(newCompany);
-       }
-       return null;
+//       }
+//       return null;
    }
 
 
 
     @DeleteMapping("/api/company/{id}")
     public Optional<Company> deleteCompanyById(Authentication auth, @PathVariable Long id) {
-        if(auth !=null && auth.isAuthenticated()) {
+        System.out.println("deleting a company " + id);
+//        if(auth !=null && auth.isAuthenticated()) {
             this.companyRepository.deleteById(id);
             return this.companyRepository.findById(id); // we want to make sure that id is deleted
-        }
-        return null;
+//        }
+//        return null;
     }
     @GetMapping("/api/company")
     public Iterable<Company> getAll(Authentication auth) {
-        if(auth !=null && auth.isAuthenticated()) {
+        System.out.println("getting all companies");
+
+//        if(auth !=null && auth.isAuthenticated()) {
             return this.companyRepository.findAll();
-        }
-        return null;
+//        }
+//        return null;
     }
 
 

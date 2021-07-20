@@ -31,8 +31,7 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(long id, Company company, Date createdOn, User createdBy, String invoiceDescription, List<InvoiceLineItem> lineItems) {
-        this.id = id;
+    public Invoice(Company company, Date createdOn, User createdBy, String invoiceDescription, List<InvoiceLineItem> lineItems) {
         this.company = company;
         this.createdOn = createdOn;
         this.createdBy = createdBy;
