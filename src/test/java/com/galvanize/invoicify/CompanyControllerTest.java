@@ -1,4 +1,4 @@
-package com.example.invoicify;
+package com.galvanize.invoicify;
 
 import com.galvanize.invoicify.controllers.CompanyController;
 import com.galvanize.invoicify.controllers.UserController;
@@ -73,8 +73,7 @@ public class CompanyControllerTest {
 
     @Test
     public void testCreateCompany(){
-        when(auth.isAuthenticated()).thenReturn(true);
-        System.out.println((auth.toString()));
+//        when(auth.isAuthenticated()).thenReturn(true);
         when(companyRepository.save(any(Company.class))).thenReturn(new Company("ABC-Company"));
         companyController = new CompanyController(companyRepository);
         Company actual = companyController.createCompany(auth,new Company("ABC-Company"));
@@ -85,7 +84,7 @@ public class CompanyControllerTest {
     @Test
     public void testGetCompanyById() {
         //MockitoAnnotations.initMocks(this);
-        when(auth.isAuthenticated()).thenReturn(true);
+//        when(auth.isAuthenticated()).thenReturn(true);
 
         when(companyRepository.findById(1L)).thenReturn(Optional.of(new Company("ABC-Company")));
 
@@ -97,7 +96,7 @@ public class CompanyControllerTest {
     //UPDATE
     @Test
     public void testUpdateCompany() {
-        when(auth.isAuthenticated()).thenReturn(true);
+//        when(auth.isAuthenticated()).thenReturn(true);
 
         //MockitoAnnotations.initMocks(this);
         when(companyRepository.findById(1L)).thenReturn(Optional.of(new Company("ABC-Company")));
@@ -112,7 +111,7 @@ public class CompanyControllerTest {
     //DELETE
     @Test
     public void testDeleteCompany() {
-        when(auth.isAuthenticated()).thenReturn(true);
+//        when(auth.isAuthenticated()).thenReturn(true);
 
       //  MockitoAnnotations.initMocks(this);
 
@@ -130,7 +129,7 @@ public class CompanyControllerTest {
     //LIST
     @Test
     public void testListCustomers() {
-        when(auth.isAuthenticated()).thenReturn(true);
+//        when(auth.isAuthenticated()).thenReturn(true);
 
         ArrayList<Company> companies = new ArrayList<Company>();
         companies.add(new Company("ABC-Company"));

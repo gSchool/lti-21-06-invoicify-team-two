@@ -1,4 +1,4 @@
-package com.example.invoicify;
+package com.galvanize.invoicify;
 
 import com.galvanize.invoicify.controllers.CompanyController;
 import com.galvanize.invoicify.controllers.InvoiceController;
@@ -32,18 +32,20 @@ public class InvoiceControllerTest {
     private InvoiceRepository invoiceRepository;
 
 
-    @Test
-    public void testInvoiceList() throws Exception {
-
-        Company company = new Company("Google Inc");
-        Date date = new Date(2021, 07, 14);
-        User createdBy = new User("Me", "");
-        String invoiceDescription = "Me";
-
-//        when(invoiceRepository.save(any(Invoice.class))).thenReturn(new Invoice(1L, company, date, createdBy,  invoiceDescription, invoiceList));
-//       when(invoiceRepository.findAll()).thenReturn((Iterable<InvoiceLineItem>) invoiceList);
-
-    }
+//    //CREATE
+//    @Test
+//    public void testInvoiceList() throws Exception {
+//    Company c = companyController.
+//        Invoice invoice = new Invoice();
+//        invoice.setCompany();
+//        Date date = new Date(2021, 07, 14);
+//        User createdBy = new User("Me", "");
+//        String invoiceDescription = "Me";
+//
+//        when(invoiceRepository.save(any(Invoice.class))).thenReturn(new Invoice(1L, invoice, date, createdBy,  invoiceDescription, invoiceList));
+//
+//
+//    }
 /*
     @Test
     public void testCreateCompany(){
@@ -98,21 +100,40 @@ public class InvoiceControllerTest {
         assertThat(actual.get().getName()).isEqualTo("ABC-Company");
 
     }
+*/
 
+//    this.id = id;
+//        this.company = company;
+//        this.createdOn = createdOn;
+//        this.createdBy = createdBy;
+//        this.invoiceDescription = invoiceDescription;
+//        this.lineItems = lineItems;
     //LIST
+
+//    ArrayList<Company> companies = new ArrayList<Company>();
+//        companies.add(new Company("ABC-Company"));
+//        companies.add(new Company("XYZ-Company"));
+//    when(companyRepository.findAll()).thenReturn(companies);
+//
+//    companyController = new CompanyController(companyRepository);
+//
+//    Iterable<Company> actual = companyController.getAll(auth);
+//
+//    assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
     @Test
-    public void testListCustomers() {
-        ArrayList<Company> companies = new ArrayList<Company>();
-        companies.add(new Company("ABC-Company"));
-        companies.add(new Company("XYZ-Company"));
-        when(companyRepository.findAll()).thenReturn(companies);
+    public void testListInvoices() {
 
-        companyController = new CompanyController(companyRepository);
+        ArrayList<Invoice> invoices = new ArrayList<Invoice>();
+        invoices.add(new Invoice());
+        invoices.add(new Invoice());
+        when(invoiceRepository.findAll()).thenReturn(invoices);
 
-        Iterable<Company> actual = companyController.getAll();
+        invoiceController = new InvoiceController(invoiceRepository);
+
+        Iterable<Invoice> actual = invoiceController.listInvoices();
 
         assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
 
     }
- */
+
 }

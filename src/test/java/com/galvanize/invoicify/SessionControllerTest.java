@@ -1,4 +1,4 @@
-package com.example.invoicify;
+package com.galvanize.invoicify;
 
 import com.galvanize.invoicify.controllers.SessionController;
 import com.galvanize.invoicify.models.User;
