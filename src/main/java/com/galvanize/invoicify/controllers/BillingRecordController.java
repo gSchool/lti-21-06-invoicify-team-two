@@ -38,7 +38,7 @@ public class BillingRecordController {
     public FlatFeeBillingRecord  addFlatFeeBillingRecord(Authentication auth, @PathVariable Long id, @RequestBody FlatFeeBillingRecord body){
         //get currently logged in user
         User user = (User)auth.getPrincipal();
-        if (auth.isAuthenticated()) {
+//        if (auth.isAuthenticated()) {
             //get a company by ID
             Company company = companyRepository.findById(id).get();
             if (company != null) {
@@ -49,7 +49,7 @@ public class BillingRecordController {
                 //save the  billing record and return
                 return billingRecordRepository.save(body);
             }
-        }
+//        }
         return null;
     }
 
