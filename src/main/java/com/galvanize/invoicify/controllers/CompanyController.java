@@ -60,7 +60,6 @@ public class CompanyController {
     }
     @GetMapping("/api/company")
     public Iterable<Company> getAll(Authentication auth) {
-        System.out.println("getting all companies");
 
 //        if(auth !=null && auth.isAuthenticated()) {
             return this.companyRepository.findAll();
