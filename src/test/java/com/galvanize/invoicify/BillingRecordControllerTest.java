@@ -56,21 +56,21 @@ public class BillingRecordControllerTest {
 
     }
 
-    @Test
-    public void testGetBillingRecordsByCompanyId()  {
-        List<BillingRecord> billRecords = new ArrayList<BillingRecord>();
-        User createdBy = new User("admin", "$2a$10$Yrz280CrCS51JrmToyUyGeHE99uVTtqazk0tOm2/nIiovk/FC5N9a");
-        String description = "Faxes";
-        Company client = new Company("Vapianos Ltd.");
-        double amount = 300;
-        FlatFeeBillingRecord flatFeeBillingRecord = new FlatFeeBillingRecord(createdBy, description, client, amount);
-        billRecords.add(flatFeeBillingRecord);
-        when(billingRecordRepository.findById(0L)).thenReturn(Optional.of(billRecords.get(0)));
-        billingRecordController = new BillingRecordController(billingRecordRepository, companyRepository);
-        BillingRecord actual = billingRecordController.getBillingRecordsById(auth,0L);
-        String expected = "FlatFeeBillingRecord{id= 0, createdBy=createdBy{id=null, password=$2a$10$Yrz280CrCS51JrmToyUyGeHE99uVTtqazk0tOm2/nIiovk/FC5N9a, username=admin, accountNonExpired=true, accountNonLocked=true, credentialsNonExpired=true, authorities=null, enabled=true}, inUse=false, description='Faxes', lineItem=null, client=Company{id=null, name='Vapianos Ltd.', invoices=null}, amount=300.0}";
-        assertThat(""+actual).isEqualTo(expected);
-    }
+//    @Test
+//    public void testGetBillingRecordsByCompanyId()  {
+//        List<BillingRecord> billRecords = new ArrayList<BillingRecord>();
+//        User createdBy = new User("admin", "$2a$10$Yrz280CrCS51JrmToyUyGeHE99uVTtqazk0tOm2/nIiovk/FC5N9a");
+//        String description = "Faxes";
+//        Company client = new Company("Vapianos Ltd.");
+//        double amount = 300;
+//        FlatFeeBillingRecord flatFeeBillingRecord = new FlatFeeBillingRecord(createdBy, description, client, amount);
+//        billRecords.add(flatFeeBillingRecord);
+//        when(billingRecordRepository.findById(0L)).thenReturn(Optional.of(billRecords.get(0)));
+//        billingRecordController = new BillingRecordController(billingRecordRepository, companyRepository);
+//        BillingRecord actual = billingRecordController.getBillingRecordsById(auth,0L);
+//        String expected = "FlatFeeBillingRecord{id= 0, createdBy=createdBy{id=null, password=$2a$10$Yrz280CrCS51JrmToyUyGeHE99uVTtqazk0tOm2/nIiovk/FC5N9a, username=admin, accountNonExpired=true, accountNonLocked=true, credentialsNonExpired=true, authorities=null, enabled=true}, inUse=false, description='Faxes', lineItem=null, client=Company{id=null, name='Vapianos Ltd.', invoices=null}, amount=300.0}";
+//        assertThat(""+actual).isEqualTo(expected);
+//    }
 
 
     @Test
