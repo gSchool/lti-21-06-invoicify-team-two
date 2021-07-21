@@ -29,8 +29,8 @@ public class BillingRecordController {
     @PostMapping("/billing-record/flat-fee/{id}")
     public FlatFeeBillingRecord  addFlatFeeBillingRecord(Authentication auth, @PathVariable Long id, @RequestBody FlatFeeBillingRecord body){
         //get currently logged in user
-//        User user = (User)auth.getPrincipal();
-        User user = body.getCreatedBy();
+        User user = (User)auth.getPrincipal();
+//        User user = body.getCreatedBy();
 //        if (auth.isAuthenticated()) {
             //get a company by ID
             Company company = companyRepository.findById(id).get();
@@ -49,8 +49,8 @@ public class BillingRecordController {
     @PostMapping("/billing-record/rate-based/{id}")
     public RateBasedBillingRecord  addRateBasedBillingRecord(Authentication auth, @PathVariable Long id, @RequestBody RateBasedBillingRecord body){
         //get currently logged in user
-//        User user = (User)auth.getPrincipal();
-        User user = body.getCreatedBy();
+        User user = (User)auth.getPrincipal();
+//        User user = body.getCreatedBy();
 
 //        if (auth.isAuthenticated()) {
             //get a company by ID
