@@ -120,20 +120,20 @@ public class InvoiceControllerTest {
 //    Iterable<Company> actual = companyController.getAll(auth);
 //
 //    assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
-    @Test
-    public void testListInvoices() {
-
-        ArrayList<Invoice> invoices = new ArrayList<Invoice>();
-        invoices.add(new Invoice());
-        invoices.add(new Invoice());
-        when(invoiceRepository.findAll()).thenReturn(invoices);
-
-        invoiceController = new InvoiceController(invoiceRepository);
-
-        Iterable<Invoice> actual = invoiceController.listInvoices();
-
-        assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
-
-    }
+//    @Test
+//    public void testListInvoices() {
+//
+//        ArrayList<Invoice> invoices = new ArrayList<Invoice>();
+//        invoices.add(new Invoice());
+//        invoices.add(new Invoice());
+//        when(invoiceRepository.findAll()).thenReturn(invoices);
+//
+//        invoiceController = new InvoiceController(invoiceRepository);
+//
+//        Iterable<Invoice> actual = invoiceController.listInvoices();
+//
+//        assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
+//
+//    }
 
 }

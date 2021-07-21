@@ -1,12 +1,10 @@
-http://localhost:8080/api/billing-record/flat-fee/1
-
-As a user, I want to add a billing record with a company,
-so that we can later provide that service for that company
-
-Given I have a company that we can provide a service with a flat fee
-
-When I submit the company id, price, and description of the service
-
-Then the billing record should be entered into the system
-
-And the information of the billing record should show in the response
+Invoices
+Deployment
+Java docs to html
+Code coverage
+Code review
+Friday retro
+New feature (contacts, add more data in invoices, missing endpoints)?
+Anything else?
+Add pictures to frond end?
+Team name? 

@@ -21,9 +21,12 @@ public class BillingRecordController {
 //        return null;
     }
     @GetMapping("/billing-record/{id}")
-    public BillingRecord getBillingRecordsById(Authentication auth, @PathVariable Long id) {
+    public Iterable<BillingRecord> getBillingRecordsById(Authentication auth, @PathVariable Long id) {
 //        if (auth.isAuthenticated())
-            return billingRecordRepository.findById(id).get();
+
+        Company company = companyRepository.findById(id).get();
+        return billingRecordRepository.findAllByClient(company);
+//            return billingRecordRepository.findById(id).get();
 //        return null;
     }
     @PostMapping("/billing-record/flat-fee/{id}")
