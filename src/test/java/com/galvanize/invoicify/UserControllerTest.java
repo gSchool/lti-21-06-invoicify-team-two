@@ -69,4 +69,20 @@ class UserControllerTest {
         assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
 
     }
+
+//    PUT http://localhost:8080/api/user/{userId}
+    @Test
+    public void testModifyUserCredentials() {
+//        when(auth.getPrincipal()).thenReturn(new User("admin","admin"));
+        User user = new User("admin", "admin");
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        user.setUsername("test");
+        when(userRepository.save(any(User.class))).thenReturn(user);
+        userController = new UserController(userRepository, encoder);
+        User actual = userController.updateUser(auth, user, 1L);
+        assertThat(actual.getUsername()).isEqualTo(user.getUsername());
+
+    }
+
+
 }
