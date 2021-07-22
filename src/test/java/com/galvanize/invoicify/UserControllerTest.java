@@ -70,10 +70,8 @@ class UserControllerTest {
 
     }
 
-//    PUT http://localhost:8080/api/user/{userId}
     @Test
     public void testModifyUserCredentials() {
-//        when(auth.getPrincipal()).thenReturn(new User("admin","admin"));
         User user = new User("admin", "admin");
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
         user.setUsername("test");
@@ -84,5 +82,14 @@ class UserControllerTest {
 
     }
 
+    @Test
+    public void testUserGetById(){
+        User user = new User("admin", "admin");
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        userController = new UserController(userRepository, encoder);
+        User actual = userController.getUserById(auth, 1L);
+        assertThat(actual).isEqualTo(user);
+
+    }
 
 }

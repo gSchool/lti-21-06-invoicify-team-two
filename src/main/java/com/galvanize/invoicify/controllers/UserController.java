@@ -25,21 +25,6 @@ public class UserController {
 		this.encoder = encoder;
 	}
 
-//	@PutMapping("{id}")
-//	public User updateUser(Authentication auth, @RequestBody User user, @PathVariable Long id) {
-//		Optional<User> currentUserData = this.userRepository.findById(id);
-//		user.setId(currentUserData.get().getId());
-//
-//		if (user.getPassword() == null) {
-//			user.setPassword(currentUserData.get().getPassword());
-//		} else {
-//			String encryptedPassword = encoder.encode(user.getPassword());
-//			user.setPassword(encryptedPassword);
-//		}
-//
-//		return userRepository.save(user);
-//	}
-
 	@PostMapping
 	public User createUser(@RequestBody User user) {
 		String password = user.getPassword();
@@ -64,4 +49,9 @@ public class UserController {
 		return userRepository.save(currentUserData);
 	}
 
+	@GetMapping("/{id}")
+	public User getUserById(Authentication auth,@PathVariable Long id) {
+		return	this.userRepository.findById(id).get();
+
+	}
 }
