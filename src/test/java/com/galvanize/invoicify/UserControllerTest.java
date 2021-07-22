@@ -69,4 +69,27 @@ class UserControllerTest {
         assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
 
     }
+
+    @Test
+    public void testModifyUserCredentials() {
+        User user = new User("admin", "admin");
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        user.setUsername("test");
+        when(userRepository.save(any(User.class))).thenReturn(user);
+        userController = new UserController(userRepository, encoder);
+        User actual = userController.updateUser(auth, user, 1L);
+        assertThat(actual.getUsername()).isEqualTo(user.getUsername());
+
+    }
+
+    @Test
+    public void testUserGetById(){
+        User user = new User("admin", "admin");
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        userController = new UserController(userRepository, encoder);
+        User actual = userController.getUserById(auth, 1L);
+        assertThat(actual).isEqualTo(user);
+
+    }
+
 }
