@@ -4,7 +4,9 @@ import com.galvanize.invoicify.models.BillingRecord;
 import com.galvanize.invoicify.models.Company;
 import org.springframework.data.repository.CrudRepository;
 
-public interface BillingRecordRepository  extends CrudRepository<BillingRecord, Long>  {
+import java.util.List;
 
+public interface BillingRecordRepository  extends CrudRepository<BillingRecord, Long>  {
+    List<BillingRecord> findByIdIn(Long[] RecordIds);
     Iterable<BillingRecord> findAllByClient(Company company);
 }

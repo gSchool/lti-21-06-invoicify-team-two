@@ -1,9 +1,8 @@
 package com.galvanize.invoicify.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.invoicify.models.*;
 import com.galvanize.invoicify.repositories.BillingRecordRepository;
-import com.galvanize.invoicify.repositories.InvoiceLineItemRepository;
+import com.galvanize.invoicify.repositories.CompanyRepository;
 import com.galvanize.invoicify.repositories.InvoiceRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -12,53 +11,46 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @RestController
+@RequestMapping("/api/invoice")
 public class InvoiceController {
     private final InvoiceRepository invoiceRepository;
+    private final CompanyRepository companyRepository;
     private final BillingRecordRepository billingRecordRepository;
-    private final InvoiceLineItemRepository invoiceLineItemRepository;
-    public InvoiceController(InvoiceRepository invoiceRepository, BillingRecordRepository billingRecordRepository, InvoiceLineItemRepository invoiceLineItemRepository){
-        this.invoiceRepository=invoiceRepository;
+
+    public InvoiceController(InvoiceRepository invoiceRepository, CompanyRepository companyRepository, BillingRecordRepository billingRecordRepository) {
+        this.invoiceRepository = invoiceRepository;
+        this.companyRepository = companyRepository;
         this.billingRecordRepository = billingRecordRepository;
-        this.invoiceLineItemRepository = invoiceLineItemRepository;
     }
 
-    @PostMapping("/api/invoice/{id}")
+    @PostMapping("/{id}")
     public Invoice createInvoice(Authentication authentication, @PathVariable Long id, @RequestBody InvoiceView body) {
-
-
-        System.out.println(body.toString());
-
-        User createdBy = (User)authentication.getPrincipal();
-
-        BillingRecord billingRecord;
+        User createdBy = (User) authentication.getPrincipal();
+        List<BillingRecord> records = billingRecordRepository.findByIdIn(body.getRecordIds());
         Invoice invoice = new Invoice();
+        invoice.setInvoiceDescription(body.getInvoiceDescription());
         List<InvoiceLineItem> bills = new ArrayList<>();
         Date date = new Date(System.currentTimeMillis());
-
-        for (int i = 0; i < body.getRecordIds().length; i++) {
-            InvoiceLineItem invoiceLineItem = new InvoiceLineItem();
-            billingRecord = billingRecordRepository.findById(body.getRecordIds()[i]).get();
-            invoiceLineItem.setBillingRecord(billingRecord);
+        InvoiceLineItem invoiceLineItem = new InvoiceLineItem();
+        for (BillingRecord record : records) {
+            record.setInUse(true);
+            invoiceLineItem.setBillingRecord(record);
             invoiceLineItem.setCreatedBy(createdBy);
             invoiceLineItem.setCreatedOn(date);
+            invoiceLineItem.setInvoice(invoice);
             bills.add(invoiceLineItem);
-            invoice = new Invoice(billingRecord.getClient(), date, createdBy,body.getInvoiceDescription(), bills);
-//            invoiceLineItem.setInvoice(invoice);
-            invoiceLineItemRepository.save(invoiceLineItem);
-
         }
-        System.out.println(invoice.toString());
+        invoice.setLineItems(bills);
+        invoice.setCreatedBy(createdBy);
+        invoice.setCreatedOn(date);
+        invoice.setCompany(companyRepository.findById(id).get());
         return invoiceRepository.save(invoice);
     }
 
-    @GetMapping("/api/invoice")
+    @GetMapping()
     public Iterable<Invoice> listInvoices() {
-
-//        if(auth !=null && auth.isAuthenticated()) {
         return this.invoiceRepository.findAll();
-//        }
-//        return null;
     }
+
 }

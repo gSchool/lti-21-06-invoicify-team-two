@@ -43,17 +43,14 @@ public class SessionController {
 	// logs in a user
 	@PutMapping
 	public UserDetails login(@RequestBody User user) {
-
 		UserDetails details = userDetails.loadUserByUsername(user.getUsername());
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(details, user.getPassword(),
 				details.getAuthorities());
 		authenticator.authenticate(token);
-
 		if (token.isAuthenticated()) {
 			SecurityContextHolder.getContext().setAuthentication(token);
 		}
 		return details;
-
 	}
 
 	// logs out a user
