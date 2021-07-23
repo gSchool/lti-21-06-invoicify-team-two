@@ -15,7 +15,7 @@
 //public class SeedData {
 //
 //	public SeedData(UserRepository userRepository, CompanyRepository companyRepository, BillingRecordRepository recordRepository, InvoiceRepository invoiceRepository, PasswordEncoder encoder) {
-		User admin = userRepository.save(new User("admin", encoder.encode("admin")));
+//		User admin = userRepository.save(new User("admin", encoder.encode("admin")));
 //		User userBob = userRepository.save(new User("bob", encoder.encode("password")));
 //		User userBobby = userRepository.save(new User("bobby", encoder.encode("password")));
 //		User userSally = userRepository.save(new User("sally", encoder.encode("password")));
