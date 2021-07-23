@@ -5,9 +5,9 @@ name: Java CI with Maven test Naushabateam2
 
 on:
   push:
-    branches: [ naushabateam2 ]
+    branches: [ NaushabaTeam2 ]
   pull_request:
-    branches: [ naushabateam2 ]
+    branches: [NaushabaTeam2 ]
 
 jobs:
   build:
