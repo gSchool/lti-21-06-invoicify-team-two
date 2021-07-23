@@ -1,11 +1,15 @@
-package com.example.invoicify;
+package com.galvanize.invoicify;
+import com.galvanize.invoicify.controllers.CompanyController;
 import com.galvanize.invoicify.controllers.SessionController;
 import com.galvanize.invoicify.controllers.UserController;
+import com.galvanize.invoicify.models.Company;
 import com.galvanize.invoicify.models.User;
 import com.galvanize.invoicify.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -49,4 +53,43 @@ class UserControllerTest {
         User actual = sessionController.getLoggedInUserId(auth);
         assertThat(actual.getUsername()).isEqualTo("admin");
     }
+    //LIST
+    @Test
+    public void testListUsers() {
+
+        ArrayList<User> users = new ArrayList<User>();
+        users.add(new User());
+        users.add(new User());
+        when(userRepository.findAll()).thenReturn(users);
+
+        userController = new UserController(userRepository, encoder);
+
+        Iterable<User> actual = userController.listUsers();
+
+        assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
+
+    }
+
+    @Test
+    public void testModifyUserCredentials() {
+        User user = new User("admin", "admin");
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        user.setUsername("test");
+        when(userRepository.save(any(User.class))).thenReturn(user);
+        userController = new UserController(userRepository, encoder);
+        User actual = userController.updateUser(auth, user, 1L);
+        assertThat(actual.getUsername()).isEqualTo(user.getUsername());
+
+    }
+
+    @Test
+    public void testUserGetById(){
+        User user = new User("admin", "admin");
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        userController = new UserController(userRepository, encoder);
+        User actual = userController.getUserById(auth, 1L);
+        assertThat(actual).isEqualTo(user);
+
+    }
+
 }

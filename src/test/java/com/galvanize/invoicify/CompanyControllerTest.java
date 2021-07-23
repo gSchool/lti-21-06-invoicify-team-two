@@ -1,4 +1,4 @@
-package com.example.invoicify;
+package com.galvanize.invoicify;
 
 import com.galvanize.invoicify.controllers.CompanyController;
 import com.galvanize.invoicify.controllers.UserController;
@@ -9,8 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,62 +27,51 @@ import static org.mockito.Mockito.when;
 public class CompanyControllerTest {
 
     private CompanyController companyController;
-
     @Mock
     private CompanyRepository companyRepository;
+
+    @Mock
+    private AuthenticationManager authenticator;
+
+    @Mock
+    private Authentication auth;
 
     @Test
     public void testCreateCompany(){
         when(companyRepository.save(any(Company.class))).thenReturn(new Company("ABC-Company"));
         companyController = new CompanyController(companyRepository);
-        Company actual = companyController.createCompany(new Company("ABC-Company"));
+        Company actual = companyController.createCompany(auth,new Company("ABC-Company"));
         assertThat(actual.getName()).isEqualTo("ABC-Company");
-
     }
 
     //READ
     @Test
     public void testGetCompanyById() {
-
-        //MockitoAnnotations.initMocks(this);
-
         when(companyRepository.findById(1L)).thenReturn(Optional.of(new Company("ABC-Company")));
-
         companyController = new CompanyController(companyRepository);
-        Optional<Company> actual = companyController.getCompanyById(1L);
-
+        Optional<Company> actual = companyController.getCompanyById(auth,1L);
         assertThat(actual.get().getName()).isEqualTo("ABC-Company");
     }
+
     //UPDATE
     @Test
     public void testUpdateCompany() {
-
-        //MockitoAnnotations.initMocks(this);
-
         when(companyRepository.findById(1L)).thenReturn(Optional.of(new Company("ABC-Company")));
         when(companyRepository.save(any(Company.class))).thenReturn(new Company("XYZ-Company"));
-
         companyController = new CompanyController(companyRepository);
-        Optional<Company> actual = Optional.ofNullable(companyController.updateCompany(1L, new Company("XYZ-Company")));
-        Company actual2 = companyController.createCompany(actual.get());
-
+        Optional<Company> actual = Optional.ofNullable(companyController.updateCompany(auth, 1L, new Company("XYZ-Company")));
+        Company actual2 = companyController.updateCompany(auth, 1L, actual.get());
         assertThat(actual2.getName()).isEqualTo("XYZ-Company");
     }
+
     //DELETE
     @Test
     public void testDeleteCompany() {
-
-      //  MockitoAnnotations.initMocks(this);
-
         Company company = new Company("ABC-Company");
-
         when(companyRepository.findById(company.getId())).thenReturn(Optional.of(company));
         companyController = new CompanyController(companyRepository);
-
-        Optional<Company> actual = companyController.deleteCompanyById(company.getId());
-
+        Optional<Company> actual = companyController.deleteCompanyById(auth, company.getId());
         assertThat(actual.get().getName()).isEqualTo("ABC-Company");
-
     }
 
     //LIST
@@ -86,12 +81,10 @@ public class CompanyControllerTest {
         companies.add(new Company("ABC-Company"));
         companies.add(new Company("XYZ-Company"));
         when(companyRepository.findAll()).thenReturn(companies);
-
         companyController = new CompanyController(companyRepository);
-
-        Iterable<Company> actual = companyController.getAll();
-
+        Iterable<Company> actual = companyController.getAll(auth);
         assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
-
     }
+
 }
+

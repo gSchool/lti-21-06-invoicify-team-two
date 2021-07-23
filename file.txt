@@ -1,10 +1,10 @@
-As a user I want to see a list of
-all billing records of each company,
-so that I know which services were
-requested from clients
-
-Given I have billing records
-
-When I check the list of billing records
-
-I should see the list of all billing records
+Invoices
+Deployment
+Java docs to html
+Code coverage
+Code review
+Friday retro
+New feature (contacts, add more data in invoices, missing endpoints)?
+Anything else?
+Add pictures to frond end?
+Team name? 

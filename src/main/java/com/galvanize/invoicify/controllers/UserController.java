@@ -4,15 +4,11 @@ import com.galvanize.invoicify.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.galvanize.invoicify.models.User;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,21 +25,6 @@ public class UserController {
 		this.encoder = encoder;
 	}
 
-	@PutMapping("{id}")
-	public User updateUser(Authentication auth, @RequestBody User user, @PathVariable Long id) {
-		Optional<User> currentUserData = this.userRepository.findById(id);
-		user.setId(currentUserData.get().getId());
-
-		if (user.getPassword() == null) {
-			user.setPassword(currentUserData.get().getPassword());
-		} else {
-			String encryptedPassword = encoder.encode(user.getPassword());
-			user.setPassword(encryptedPassword);
-		}
-
-		return userRepository.save(user);
-	}
-
 	@PostMapping
 	public User createUser(@RequestBody User user) {
 		String password = user.getPassword();
@@ -53,4 +34,24 @@ public class UserController {
 		return user;
 	}
 
+	@GetMapping
+	public Iterable<User> listUsers() {
+		return userRepository.findAll();
+	}
+
+	@PutMapping("/{id}")
+	public User updateUser(Authentication auth, @RequestBody User user, @PathVariable Long id) {
+		User currentUserData = this.userRepository.findById(id).get();
+		currentUserData.setUsername(user.getUsername());
+		String encryptedPassword = encoder.encode(user.getPassword());
+		currentUserData.setPassword(encryptedPassword);
+
+		return userRepository.save(currentUserData);
+	}
+
+	@GetMapping("/{id}")
+	public User getUserById(Authentication auth,@PathVariable Long id) {
+		return	this.userRepository.findById(id).get();
+
+	}
 }
