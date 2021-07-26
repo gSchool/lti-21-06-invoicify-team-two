@@ -13,7 +13,6 @@ public abstract  class BillingRecord {
     @ManyToOne
     protected User createdBy;
 
-
     protected boolean inUse=false;
 
     protected String description;
@@ -78,6 +77,4 @@ public abstract  class BillingRecord {
         this.client = client;
     }
     public abstract double getTotal();
-
-
 }

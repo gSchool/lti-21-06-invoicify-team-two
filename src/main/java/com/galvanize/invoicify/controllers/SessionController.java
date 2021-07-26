@@ -31,7 +31,11 @@ public class SessionController {
 		this.authenticator = authenticator;
 	}
 
-	// gets currently logged in user
+	/**
+	 * <p> Gets currently logged in user. </p>
+	 * @param auth
+	 * @return logged in User
+	 */
 	@GetMapping
 	public User getLoggedInUserId(Authentication auth) {
 		if (auth != null) {
@@ -40,7 +44,11 @@ public class SessionController {
 		return null;
 	}
 
-	// logs in a user
+	/**
+	 * <p> Logs in a User based on username and password. </p>
+	 * @param user
+	 * @return logged in User
+	 */
 	@PutMapping
 	public UserDetails login(@RequestBody User user) {
 		UserDetails details = userDetails.loadUserByUsername(user.getUsername());
@@ -53,7 +61,13 @@ public class SessionController {
 		return details;
 	}
 
-	// logs out a user
+	/**
+	 * <p> Logs out the current User. </p>
+	 * @param auth
+	 * @param request
+	 * @param response
+	 * @return true if successful
+	 */
 	@DeleteMapping
 	public Boolean logout(Authentication auth, HttpServletRequest request, HttpServletResponse response) {
 		new SecurityContextLogoutHandler().logout(request, response, auth);

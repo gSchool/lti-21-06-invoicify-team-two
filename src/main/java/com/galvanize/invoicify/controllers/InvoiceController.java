@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/invoice")
 public class InvoiceController {
+
     private final InvoiceRepository invoiceRepository;
     private final CompanyRepository companyRepository;
     private final BillingRecordRepository billingRecordRepository;
@@ -24,6 +25,13 @@ public class InvoiceController {
         this.billingRecordRepository = billingRecordRepository;
     }
 
+    /**
+     * <p> Finds a BillingRecord by Company ID and creates an Invoice based on an InvoiceView. </p>
+     * @param authentication
+     * @param id
+     * @param body
+     * @return created Invoice
+     */
     @PostMapping("/{id}")
     public Invoice createInvoice(Authentication authentication, @PathVariable Long id, @RequestBody InvoiceView body) {
         User createdBy = (User) authentication.getPrincipal();
@@ -48,6 +56,10 @@ public class InvoiceController {
         return invoiceRepository.save(invoice);
     }
 
+    /**
+     * <p> Returns all invoices. </p>
+     * @return list of Invoice
+     */
     @GetMapping()
     public Iterable<Invoice> listInvoices() {
         return this.invoiceRepository.findAll();

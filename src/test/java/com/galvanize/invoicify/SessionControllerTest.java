@@ -85,5 +85,4 @@ public class SessionControllerTest {
         UserDetails actual = sessionController.login(user);
         assertThat(actual.getUsername()).isEqualTo("admin");
     }
-
 }

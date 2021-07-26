@@ -1,4 +1,5 @@
 package com.galvanize.invoicify;
+
 import com.galvanize.invoicify.controllers.CompanyController;
 import com.galvanize.invoicify.controllers.SessionController;
 import com.galvanize.invoicify.controllers.UserController;
@@ -46,28 +47,23 @@ class UserControllerTest {
 
     //CREATE
     @Test
-    public void testSession() {
-
-        when(auth.getPrincipal()).thenReturn(new User("admin","admin"));
-        sessionController = new SessionController(userDetails,authenticator);
+    public void testCreateSession() {
+        when(auth.getPrincipal()).thenReturn(new User("admin", "admin"));
+        sessionController = new SessionController(userDetails, authenticator);
         User actual = sessionController.getLoggedInUserId(auth);
         assertThat(actual.getUsername()).isEqualTo("admin");
     }
+
     //LIST
     @Test
     public void testListUsers() {
-
         ArrayList<User> users = new ArrayList<User>();
         users.add(new User());
         users.add(new User());
         when(userRepository.findAll()).thenReturn(users);
-
         userController = new UserController(userRepository, encoder);
-
         Iterable<User> actual = userController.listUsers();
-
         assertThat(actual.spliterator().getExactSizeIfKnown()).isEqualTo(2);
-
     }
 
     @Test
@@ -83,7 +79,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void testUserGetById(){
+    public void testUserGetById() {
         User user = new User("admin", "admin");
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
         userController = new UserController(userRepository, encoder);
@@ -91,5 +87,4 @@ class UserControllerTest {
         assertThat(actual).isEqualTo(user);
 
     }
-
 }
