@@ -52,7 +52,7 @@ public class BillingRecordController {
     public FlatFeeBillingRecord addFlatFeeBillingRecord(Authentication auth, @PathVariable Long id, @RequestBody FlatFeeBillingRecord body) {
         //get currently logged in user
         User user = (User) auth.getPrincipal();
-        System.out.println("user: " +user);
+        System.out.println("user: \n\n\n" +user);
 
         //get a company by ID
         Company company = companyRepository.findById(id).get();
