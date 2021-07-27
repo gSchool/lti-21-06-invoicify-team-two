@@ -5,9 +5,11 @@ name: Master branch mvn test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ elias-branch ]
   pull_request:
-    branches: [ master ]
+    branches: [ elias-branch ]
+  create:
+    branches: [ elias-branch]
 
 jobs:
   build:
